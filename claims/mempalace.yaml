@@ -1,0 +1,44 @@
+# Claims as written in the MemPalace README, read 2026-11-09 (default branch commit 927d467d72764ced1f2be900b95cbc7dae4b4581).
+# Context: the dispute is tracked in MemPalace/mempalace issue 27. This file records what the README says and under which
+# settings the README says it. It does not judge the claim.
+library: mempalace
+source:
+  file: README.md
+  url: https://github.com/MemPalace/mempalace/blob/927d467d72764ced1f2be900b95cbc7dae4b4581/README.md
+  line: "7, 241-249"
+  retrieved: 2026-11-09
+claims:
+  - id: raw_recall_at_5
+    quote: "96.6% R@5 raw on LongMemEval"
+    value: 0.966
+    note: >
+      README table row "Raw (semantic search, no heuristics, no LLM)", labelled "LongMemEval - retrieval recall
+      (R@5, 500 questions)" and reproduced with benchmarks/longmemeval_bench.py on longmemeval_s_cleaned.json.
+      The README does not name the metric variant; recall_any (any evidence session in the top 5) is how that
+      script scores it. Its session documents contain user turns only.
+    settings:
+      dataset: longmemeval_s_cleaned
+      metric: recall_any
+      k: 5
+      questions: 500
+      index_text: user_only
+      granularity: session
+      pipeline: vector_only
+      judge: none
+      library: mempalace
+  - id: hybrid_v4_heldout_recall_at_5
+    quote: "Hybrid v4, held-out 450q (tuned on 50 dev, not seen during training) 98.4%"
+    value: 0.984
+    note: >
+      A different pipeline (keyword, temporal and preference boosting) on a different question subset. No adapter
+      here implements hybrid v4, so compare will refuse it until one does.
+    settings:
+      dataset: longmemeval_s_cleaned
+      metric: recall_any
+      k: 5
+      questions: 450
+      index_text: user_only
+      granularity: session
+      pipeline: hybrid_v4
+      judge: none
+      library: mempalace
