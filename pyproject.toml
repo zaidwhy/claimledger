@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claimledger"
+version = "0.1.0"
+description = "Run an agent-memory library on a fixed LongMemEval slice and set the measured recall next to what its README claims."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = ["click>=8.1", "pyyaml>=6.0"]
+
+[project.optional-dependencies]
+embed = ["chromadb>=1.5.4,<2"]
+mempalace = ["chromadb>=1.5.4,<2", "mempalace==3.11.0"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+claimledger = "claimledger.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
