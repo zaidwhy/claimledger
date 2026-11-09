@@ -10,3 +10,4 @@ and decide whether anything goes on MemPalace#27. Nothing has been posted.
 
 ## Overnight decisions (review)
 - No per-question process isolation added. The earlier 500-run crash happened at 358 MB free disk; the rerun at about 10 GB free finished with 0 errors, so the fix was disk space, not code.
+- Committed the 6 seed-0 reports the README cites (results/*_n50_* and *_n500_*, about 0.6 MB) so its numbers trace to files; the repo is private, so nothing is published. Other results stay ignored.

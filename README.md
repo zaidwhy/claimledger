@@ -28,7 +28,7 @@ claimledger compare --claims claims/mempalace.yaml \
     --baseline results/bm25_n50_seed0_k5.json --baseline results/embed_n50_seed0_k5.json
 ```
 
-Reports (markdown and JSON) go to `results/`, which is gitignored. Reports about a named project stay local until the person who ran them decides what to do with them.
+Reports (markdown and JSON) go to `results/`, which is gitignored except for the seed-0 reports this README cites, committed so every number below traces to a file. Other reports about a named project stay local until the person who ran them decides what to do with them.
 
 ## Measurements (2026-11-09 and 2026-11-10, local, CPU)
 
@@ -43,7 +43,7 @@ recall_any@5, user-turn session documents, seed 0. The 500-question rows cover e
 | mempalace-raw 3.11.0 | vector_only | 500 | 96.6% (483/500) | 94.6% to 97.9% |
 | mempalace 3.11.0 (search_memories defaults) | library_default | 50 | 100.0% (50/50) | 92.9% to 100.0% |
 
-The raw-retrieval claim reproduces: `mempalace-raw` measured 96.6% (483/500), the README's own number, with every setting matched (`claimledger compare --claims claims/mempalace.yaml --report results/mempalace-raw_n500_seed0_k5.json --baseline results/bm25_n500_seed0_k5.json`). The same run shows what the number does not say: plain BM25 on the same 500 questions reaches 95.2% (476/500), and the two intervals overlap, so this benchmark at k=5 cannot separate the library's vector retrieval from keyword search. Question by question, 19 questions hit at k=5 only with mempalace-raw and 12 only with BM25 (exact McNemar p = 0.28). BM25 is ahead at k=1 (82.6% against 80.6%) and k=3 (93.2% against 92.6%); vector retrieval is ahead at k=10 (98.2% against 97.0%) and on recall_all@5 (85.0% against 81.0%), where every evidence session must be retrieved. An earlier 500-question attempt aborted with `memory allocation of 425984 bytes failed` while the disk had 358 MB free; the rerun with about 10 GB free finished in 793 s with 0 adapter errors, so the abort was the machine, not the library. The `mempalace` adapter's pipeline label (`library_default`) differs from the claim's (`vector_only`), so `compare` refuses it.
+The raw-retrieval claim reproduces: `mempalace-raw` measured 96.6% (483/500), the README's own number, with every setting matched (`claimledger compare --claims claims/mempalace.yaml --report results/mempalace-raw_n500_seed0_k5.json --baseline results/bm25_n500_seed0_k5.json`). The same run shows what the number does not say: plain BM25 on the same 500 questions reaches 95.2% (476/500), and the two intervals overlap, so this benchmark at k=5 cannot separate the library's vector retrieval from keyword search. Question by question, 19 questions hit at k=5 only with mempalace-raw and 12 only with BM25 (exact McNemar p = 0.28, from the `per_question` rows of the two committed 500-question reports). BM25 is ahead at k=1 (82.6% against 80.6%) and k=3 (93.2% against 92.6%); vector retrieval is ahead at k=10 (98.2% against 97.0%) and on recall_all@5 (85.0% against 81.0%), where every evidence session must be retrieved. An earlier 500-question attempt aborted with `memory allocation of 425984 bytes failed` while the disk had 358 MB free; the rerun with about 10 GB free finished in 793 s with 0 adapter errors, so the abort was the machine, not the library. The `mempalace` adapter's pipeline label (`library_default`) differs from the claim's (`vector_only`), so `compare` refuses it.
 
 ## Data
 
