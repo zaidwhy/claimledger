@@ -1,6 +1,6 @@
 # claimledger handoff (2026-11-10)
 
-State: main pushed to private zaidwhy/claimledger (remote created by Zaid 2026-11-10). 28 tests pass. results/ and data/ are gitignored.
+State: main pushed to private zaidwhy/claimledger (remote created by Zaid 2026-11-10). 28 tests pass. data/ is gitignored; results/ commits only the seed-0 reports the README cites.
 
 Finding: MemPalace's "96.6% R@5 raw" reproduces exactly (483/500, all settings matched). Plain BM25 gets 95.2% (476/500) on the same questions; 19 vs 12 discordant questions, exact McNemar p = 0.28, so k=5 recall on LongMemEval-S does not separate the two. BM25 leads at k=1 and k=3.
 
