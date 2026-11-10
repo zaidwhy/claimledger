@@ -1,12 +1,10 @@
 # claimledger handoff (2026-11-10)
 
-State: local commits only, no remote. 28 tests pass. results/ and data/ are gitignored.
+State: main pushed to private zaidwhy/claimledger (remote created by Zaid 2026-11-10). 28 tests pass. results/ and data/ are gitignored.
 
 Finding: MemPalace's "96.6% R@5 raw" reproduces exactly (483/500, all settings matched). Plain BM25 gets 95.2% (476/500) on the same questions; 19 vs 12 discordant questions, exact McNemar p = 0.28, so k=5 recall on LongMemEval-S does not separate the two. BM25 leads at k=1 and k=3.
 
-Next (Zaid's calls, outward-facing): create the private remote
-`cd "C:/Users/Asus/projects/claimledger" && gh repo create zaidwhy/claimledger --private --source=. --remote=origin --push`
-and decide whether anything goes on MemPalace#27. Nothing has been posted.
+Next (Zaid's call, outward-facing): decide whether anything goes on MemPalace#27. Nothing has been posted.
 
 ## Overnight decisions (review)
 - No per-question process isolation added. The earlier 500-run crash happened at 358 MB free disk; the rerun at about 10 GB free finished with 0 errors, so the fix was disk space, not code.
