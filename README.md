@@ -4,6 +4,8 @@ A memory library's README says "96.6% R@5 on LongMemEval". Which questions, whic
 
 It reports numbers and settings. It does not classify a claim as anything.
 
+**First result (2026-11-10).** mempalace 3.11.0's "96.6% R@5 raw on LongMemEval" reproduces exactly: 483 of 500 with every setting matched. Plain BM25 on the same 500 questions scores 95.2% (476 of 500). 19 questions are found only by mempalace and 12 only by BM25 (exact McNemar p = 0.28), so recall at k=5 on this benchmark does not separate the two. Full table and the other values of k are under [Measurements](#measurements-2026-11-09-and-2026-11-10-local-cpu).
+
 ## The two failure modes it is built around
 
 1. **Comparing apples to oranges.** A number measured at k=10, or with assistant turns indexed, or through a different retrieval path, is not a reproduction of a number claimed at k=5. `compare` checks library, pipeline, dataset, metric, k, index_text, granularity and judge. Any difference prints `NOT COMPARED` with the differing settings, and no measured-versus-claimed sentence is produced.
