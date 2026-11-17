@@ -1,0 +1,89 @@
+# Claims as published by Zep (getzep/zep, getzep/graphiti, arXiv 2501.13956), read 2026-11-17.
+# Records what the sources say and under which settings. It does not judge the claims. All are end-to-end QA accuracy
+# (LLM judge); claimledger's retrieval-only runs cannot be compared to them (compare refuses on metric and judge).
+# Graphiti (Apache-2.0 library) is the open-source engine behind the paper; its README (commit 869c1b2) carries no benchmark
+# numbers, only a link to the paper. Zep Cloud is the hosted product the 2026 numbers come from.
+library: zep
+source:
+  file: arXiv 2501.13956 (Zep: A Temporal Knowledge Graph Architecture for Agent Memory)
+  url: https://arxiv.org/abs/2501.13956
+  line: "abstract; Experiments section"
+  retrieved: 2026-11-17
+  also:
+    - https://www.getzep.com/research/memory-benchmarks/
+    - https://www.getzep.com/blog/lies-damn-lies-statistics-is-mem0-really-sota-in-agent-memory/
+    - https://github.com/getzep/zep/tree/main/benchmarks
+claims:
+  - id: dmr_gpt4_turbo
+    quote: "demonstrates superior performance (94.8% vs 93.4%)"
+    value: 0.948
+    note: >
+      Abstract, DMR (Deep Memory Retrieval, from the MemGPT paper). Paper table: MemGPT gpt-4-turbo 93.4%, Zep gpt-4-turbo
+      94.8%, Zep gpt-4o-mini 98.2%, full-conversation gpt-4o-mini 98.0%. Retrieval: "10 most relevant nodes and edges", LLM
+      judge. Embedding and reranking: BGE-m3; graph construction gpt-4o-mini-2024-07-18. Submitted 2025-01-20.
+      DMR is not a claimledger dataset.
+    settings:
+      dataset: dmr
+      metric: qa_accuracy_llm_judge
+      k: 10
+      questions: not_stated
+      index_text: not_stated
+      granularity: graph_nodes_and_edges
+      pipeline: zep_graphiti_2025
+      judge: llm_judge_unnamed_in_dmr_section
+      library: zep
+  - id: longmemeval_gpt4o_2025
+    quote: "accuracy improvements of up to 18.5% while simultaneously reducing response latency by 90%"
+    value: 0.712
+    note: >
+      Abstract quote; value is the paper table row "Zep gpt-4o 71.2%" against "Full-context gpt-4o 60.2%" (latency 2.58 s vs
+      28.9 s, context 1.6k vs 115k tokens). gpt-4o-mini: Zep 63.8% vs full-context 55.4%. Answer models gpt-4o-mini-2024-07-18
+      and gpt-4o-2024-11-20; judge GPT-4o with the question-specific LongMemEval prompts. The 115k-token context implies
+      LongMemEval_S; the extracted text read here does not name the variant.
+    settings:
+      dataset: longmemeval_s
+      metric: qa_accuracy_llm_judge
+      k: not_stated
+      questions: 500
+      index_text: not_stated
+      granularity: graph_nodes_and_edges
+      pipeline: zep_graphiti_2025
+      judge: gpt-4o_longmemeval_prompts
+      library: zep
+  - id: locomo_2026_multiscope
+    quote: "94.7%"
+    value: 0.947
+    note: >
+      getzep.com/research/memory-benchmarks: LoCoMo 94.7% (1,459/1,540), retrieval 87/155 ms p50/p95, median context 5,760
+      tokens; LongMemEval 90.2% (451/500), 104/162 ms, 4,408 tokens; LoCoMo "auto search" 86.5%. Reader and judge both
+      gpt-5.4 (reader reasoning medium, judge chain-of-thought). Multi-scope retrieval: 20 edges, 10 nodes, 10 episodes,
+      5 thread summaries, 5 observations, cross-encoder reranking. No publication date on the page (dateModified
+      2026-11-04); no code or raw outputs on that page. The open harness getzep/zep/benchmarks/locomo uses edge_limit 15,
+      node_limit 5 and response/grader model gpt-6-luna, so it is not the same configuration as the page. Runs against
+      Zep Cloud (needs a Zep key). Earlier blog (published 2025-05-06): "75.14% +/- 0.17 J score", banner later changed to
+      "80% at <200ms latency", and "we erred in how we calculated Zep's LoCoMo score"; it disputes "the 65.99% score
+      reported for Zep in the Mem0 paper".
+    settings:
+      dataset: locomo
+      metric: qa_accuracy_llm_judge
+      k: not_stated
+      questions: 1540
+      index_text: not_stated
+      granularity: graph_nodes_and_edges
+      pipeline: zep_cloud_multiscope_2026
+      judge: gpt-5.4
+      library: zep
+  - id: longmemeval_2026_multiscope
+    quote: "90.2%"
+    value: 0.902
+    note: Same page and settings as locomo_2026_multiscope (451/500, 104/162 ms p50/p95, 4,408 tokens).
+    settings:
+      dataset: longmemeval_unspecified_variant
+      metric: qa_accuracy_llm_judge
+      k: not_stated
+      questions: 500
+      index_text: not_stated
+      granularity: graph_nodes_and_edges
+      pipeline: zep_cloud_multiscope_2026
+      judge: gpt-5.4
+      library: zep

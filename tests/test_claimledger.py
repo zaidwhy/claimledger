@@ -243,3 +243,16 @@ def test_ollama_judge_uses_reader_then_judge_prompt():
     judge = ollama_judge("tiny", generate=fake_generate)
     assert judge("What is the dog called?", "Biscuit", ["My dog is Biscuit"]) is True
     assert "My dog is Biscuit" in prompts[0] and "Reference answer: Biscuit" in prompts[1]
+
+
+def test_every_claim_file_loads_and_states_all_comparable_settings():
+    from pathlib import Path
+
+    from claimledger.compare import load_claims
+
+    files = sorted((Path(__file__).parent.parent / "claims").glob("*.yaml"))
+    assert {f.stem for f in files} >= {"mempalace", "mem0", "zep", "letta"}
+    for f in files:
+        doc = load_claims(f)
+        assert doc["library"] == f.stem
+        assert doc["claims"]

@@ -1,0 +1,71 @@
+# Claims as published by Mem0, read 2026-11-17. This file records what the sources say and under which settings they say it.
+# It does not judge the claims. These are end-to-end QA accuracy numbers (LLM judge), not retrieval recall, so claimledger's
+# current retrieval-only runs cannot be compared to them (compare refuses on metric and judge).
+library: mem0
+source:
+  file: README.md
+  url: https://github.com/mem0ai/mem0/blob/f1791daa86d469249c9b002f62644d58a1eb96a0/README.md
+  line: "56-79"
+  retrieved: 2026-11-17
+  also:
+    - https://mem0.ai/research
+    - https://github.com/mem0ai/memory-benchmarks
+    - https://arxiv.org/abs/2504.19413
+claims:
+  - id: locomo_new_algorithm
+    quote: "LoCoMo | 71.4 | 92.5 | 7.0K | 0.88s"
+    value: 0.925
+    note: >
+      README table "New Memory Algorithm (April 2026)", columns Old, New, Tokens, Latency p50. README caveat, verbatim:
+      "Scores reflect Mem0's managed platform, which includes proprietary optimizations not available in the open-source SDK;
+      open-source users should expect directionally similar gains but not identical numbers." And: "Single-pass retrieval (one
+      call, no agentic loops) at a top_200 retrieval budget." mem0ai/memory-benchmarks reports 92.5% = 1425/1540 (top 200)
+      and 91.8% = 1414/1540 (top 50). Judge and answer LLM per that repo default to gpt-4o; the README itself says only
+      "the same production-representative model stack". mem0.ai/research breaks LoCoMo down as Single Hop 94.6, Multi-Hop 95.4,
+      Open-domain 82.3, Temporal 92.5 and gives no judge, embedder or top-k.
+    settings:
+      dataset: locomo
+      metric: qa_accuracy_llm_judge
+      k: 200
+      questions: 1540
+      index_text: not_stated
+      granularity: extracted_memory
+      pipeline: mem0_platform_v3
+      judge: gpt-4o_per_memory-benchmarks_default_not_stated_in_readme
+      library: mem0
+  - id: longmemeval_new_algorithm
+    quote: "LongMemEval | 67.8 | 94.4 | 6.8K | 1.09s"
+    value: 0.944
+    note: >
+      Same table and same caveat as above. memory-benchmarks reports 94.4% = 472/500 (top 200) and 94.8% = 474/500 (top 50)
+      on the Mem0 Platform; the README also says "94.4 on LongMemEval -- +27 points, with 98.2 on assistant memory recall".
+      For the open-source stack that repo reports LongMemEval overall by extraction model: GPT-5 91.0%, GPT-OSS-120B 89.8%,
+      Llama 4 Maverick 88.6%, Gemma 4 31B 88.6%, with embedder text-embedding-3-small (1536 dims).
+      Which LongMemEval variant (S or M) is not stated in the README; the 500-question count matches both.
+    settings:
+      dataset: longmemeval_unspecified_variant
+      metric: qa_accuracy_llm_judge
+      k: 200
+      questions: 500
+      index_text: not_stated
+      granularity: extracted_memory
+      pipeline: mem0_platform_v3
+      judge: gpt-4o_per_memory-benchmarks_default_not_stated_in_readme
+      library: mem0
+  - id: locomo_paper_2025
+    quote: "Mem0 achieves 26% relative improvements in the LLM-as-a-Judge metric over OpenAI"
+    value: null
+    note: >
+      arXiv 2504.19413 abstract (submitted 2025-04-28). Also "91% lower p95 latency" and "saves more than 90% token cost".
+      The 68.5 J-score for the Mem0 graph variant is cited second-hand by Letta's blog (see letta.yaml), not read from the
+      paper PDF here, so no numeric value is recorded for this claim.
+    settings:
+      dataset: locomo
+      metric: qa_accuracy_llm_judge
+      k: not_stated
+      questions: not_stated
+      index_text: not_stated
+      granularity: extracted_memory
+      pipeline: mem0_oss_2025
+      judge: not_stated
+      library: mem0

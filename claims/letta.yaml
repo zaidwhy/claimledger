@@ -1,0 +1,29 @@
+# Claims as published by Letta, read 2026-11-17. Records what the source says; does not judge it.
+# The letta-ai/letta README (commit 8816d3a) has no benchmark numbers and says active development moved to
+# letta-ai/letta-code; the V1 server is on the `archive` branch.
+library: letta
+source:
+  file: 'blog post "Benchmarking AI Agent Memory: Is a Filesystem All You Need?"'
+  url: https://www.letta.com/blog/benchmarking-ai-agent-memory
+  line: "n/a"
+  retrieved: 2026-11-17
+claims:
+  - id: locomo_filesystem_gpt4o_mini
+    quote: "74.0%"
+    value: 0.74
+    note: >
+      Blog dated 2025-08-12. Letta agent whose memory is plain files, with tools grep, search_files, open, close; agent had
+      to start with search_files and end with answer_question; files embedded for semantic search. Model GPT-4o mini.
+      The page says "accuracy" but names no judge, no scoring method and no top-k. It cites "Mem0's reported 68.5% score for
+      their top-performing graph variant" and says Mem0 did not respond to requests for clarification. This is an
+      agentic-loop result using an agent harness, not a retrieval-only number.
+    settings:
+      dataset: locomo
+      metric: qa_accuracy_unspecified_judge
+      k: not_stated
+      questions: not_stated
+      index_text: not_stated
+      granularity: file
+      pipeline: letta_filesystem_agentic
+      judge: not_stated
+      library: letta
