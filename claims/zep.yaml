@@ -5,7 +5,7 @@
 # numbers, only a link to the paper. Zep Cloud is the hosted product the 2026 numbers come from.
 library: zep
 source:
-  file: arXiv 2501.13956 (Zep: A Temporal Knowledge Graph Architecture for Agent Memory)
+  file: 'arXiv 2501.13956, Zep: A Temporal Knowledge Graph Architecture for Agent Memory'
   url: https://arxiv.org/abs/2501.13956
   line: "abstract; Experiments section"
   retrieved: 2026-11-17
