@@ -4,6 +4,12 @@ Target: TMLR (rolling, double blind, no novelty requirement; reproducibility stu
 Reproducibility Certification). Working title: "Which memory benchmark numbers have a file behind them? Vendor
 claims on LongMemEval and LoCoMo, recounted and re-run under one setup."
 
+## Scope rule (Zaid, 2026-11-20): $0 only
+
+Anything that needs paid API calls is skipped. Arm 1 is free. Arm 2 runs only with a local open judge (Ollama) and is
+labelled as such. Arm 3 runs only stacks that work fully local (BM25, embed, MemPalace, mem0 OSS / Graphiti with a local
+LLM if they install), never presented as reproductions of claims made with gpt-4o or gpt-5.
+
 ## Thesis
 
 A memory vendor's headline number is a claim about one run of one stack under one answerer and judge. The paper asks
@@ -25,9 +31,10 @@ score, and no claim is called reproduced or refuted when any setting differs (`c
 | MemPalace 3.11.0 | 96.6% R@5, LongMemEval-S | reproduces exactly, 483/500; BM25 476/500, McNemar p = 0.28 (done 2026-11-10) | n/a (retrieval only) | done |
 | Mem0 Platform | LME 94.4 / 94.8, LoCoMo 92.5 / 91.8 (top 200 / 50) | **no file for any of the four.** Committed files (edcd6f1, gpt-5 answerer and judge) recount to 467/500, 452/500, 1410/1540, 1273/1540, the README's values before PR #8 (2026-05-13) raised them and changed only README.md | possible on the April files ($, answers are in the files) | platform: terms 2.3(i) restrict benchmarking, not run; OSS SDK: Apache 2.0, runnable |
 | Zep Cloud | LoCoMo 94.7, LME 90.2 (gpt-5.4) | no file on the claims page; committed `benchmarks/locomo/experiments` are 5 configs x 10 runs with gpt-4o-mini, means 0.696 to 0.803, a different setting | only on committed LoCoMo runs | Cloud: terms 2.3(i) need written consent to publish; Graphiti (Apache 2.0) runnable |
-| Zep paper 2025 | LME-S 71.2 (gpt-4o) | not yet checked | | Graphiti + gpt-4o-mini extraction |
-| Supermemory | "#1", 95% Recall@15 / 97% Recall@20 on LME | not yet checked; its own compare page says "Neither has been reproduced under a matched setup" (supermemory.ai/compare/supermemory-vs-mem0, quote from a fetch agent, re-read before citing) | | retrieval claim fits Arm 3 at $0 if self-host runs |
-| Letta | LoCoMo 74.0 (gpt-4o-mini, filesystem agent) | blog names no judge and no harness | | not reproducible as stated |
+| Zep paper 2025 | LME-S 71.2 (gpt-4o) | **no file**: getzep/zep-papers@4b7f26c has `zep_longmem_eval.ipynb` with no saved outputs and no results JSON | | Graphiti + local LLM only ($0 rule) |
+| Zep blog 2025 | LoCoMo 75.14 +/- .17 | **adds up**: `zep_locomo_grades.json` (sha256 2ecb7010...) gives 1157/1540 = 75.13%; all four category values match exactly | | |
+| Supermemory | "#1", 95% Recall@15 / 97% Recall@20 on LME | **no file**: no results in supermemoryai/memorybench or supermemory (gh tree + code search); the report links only the GitHub org. Its compare page says "Neither has been reproduced under a matched setup" (supermemory.ai/compare/supermemory-vs-mem0, quote from a fetch agent, re-read before citing) | | retrieval claim fits Arm 3 at $0 if self-host runs |
+| Letta | LoCoMo 74.0 (gpt-4o-mini, filesystem agent) | **no file**: blog links letta-leaderboard `locomo_benchmark.py` (code, gpt-4o-mini, judge via `grade_sample`), no outputs committed; blog names no judge | | not reproducible as stated |
 
 ## Prior work (from a search agent, 2026-11-20; open each before citing)
 
@@ -37,6 +44,12 @@ score, and no claim is called reproduced or refuted when any setting differs (`c
 - arXiv 2609.22231 EvalMem (seven memory systems, LoCoMo + LME-S, EMNLP 2026 Findings): full text not read; could pre-empt
   Arm 3. **Read before spending money.**
 - arXiv 2604.21284 (MemPalace critical analysis), Penfield Labs LoCoMo key audit, getzep/zep-papers#5, mem0#7641.
+- Read 2026-11-20 (summarising fetch): EvalMem tests TiMem, O-Mem, EverMemOS, MemOS, MemBox, MemoryOS, GAM, none of the
+  five vendors here, no vendor-headline comparison: no pre-emption. 2609.38021: same-answer re-judging moved 479 to 478,
+  cross-judge agreement 493/500, own system only. Maximem: Mem0 observed 57.5% then 73.8% vs claimed 93.4%; tables are images.
+- Category labels: on LoCoMo, Zep's README calls category 2 "Open Domain" and 3 "Temporal"; Mem0's files call 2 "temporal" and
+  3 "open-domain". snap-research/locomo `evaluation.py` does not name 2-4 one-to-one, so per-category numbers across vendors
+  are not comparable as labelled.
 - No found work diffs vendor headlines against vendor per-question files. That is Arm 1 and the paper's lead.
 
 ## Order of work
