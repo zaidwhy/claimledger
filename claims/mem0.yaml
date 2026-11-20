@@ -31,7 +31,7 @@ claims:
       index_text: not_stated
       granularity: extracted_memory
       pipeline: mem0_platform_v3
-      judge: gpt-4o_per_memory-benchmarks_default_not_stated_in_readme
+      judge: not_stated_for_headline_run
       library: mem0
   - id: longmemeval_new_algorithm
     quote: "LongMemEval | 67.8 | 94.4 | 6.8K | 1.09s"
@@ -50,8 +50,14 @@ claims:
       index_text: not_stated
       granularity: extracted_memory
       pipeline: mem0_platform_v3
-      judge: gpt-4o_per_memory-benchmarks_default_not_stated_in_readme
+      judge: not_stated_for_headline_run
       library: mem0
+  # Provenance, checked 2026-11-20 with `claimledger tally` on mem0ai/memory-benchmarks at 4b61c5d3 (HEAD).
+  # The per-question files under results/platform/ were last changed in edcd6f1d (2026-04-09) and recount to
+  # LongMemEval 467/500 (top_200) and 452/500 (top_50), LoCoMo 1410/1540 and 1273/1540 (1 ERROR row each);
+  # those were the README's numbers until PR #8 (4b61c5d3, 2026-05-13) raised them to the values above while
+  # changing README.md only. Answerer and judge in those files are gpt-5 on Azure, not the harness default gpt-4o.
+  # No per-question file for the raised numbers was found in the repo.
   - id: locomo_paper_2025
     quote: "Mem0 achieves 26% relative improvements in the LLM-as-a-Judge metric over OpenAI"
     value: null

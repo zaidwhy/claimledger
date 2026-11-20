@@ -68,6 +68,12 @@ What was tried for the real library: `pip install mempalace` installs cleanly (3
 
 `claims/mempalace.yaml` records each claim with the README line, a quote, the value, and the settings the README gives for it. A claim that omits a setting is rejected at load, because it cannot be compared. Claims whose pipeline no adapter implements (for example the README's "hybrid v4") are listed and refused with the reason.
 
+## Recounting a vendor's own file
+
+`claimledger tally <file.json>` recounts a per-question result file in the mem0ai/memory-benchmarks format: verdict labels per
+top-k cutoff, by question type, with ERROR rows reported both as wrong and excluded, and the file's sha256. No model is called.
+It answers one question before any rerun is paid for: does the file published beside a headline add up to the headline?
+
 ## Limits
 
 - A 50-question slice has a wide interval; read the interval, not the point value. `--slice 500` is the full benchmark.
@@ -77,4 +83,4 @@ What was tried for the real library: `pip install mempalace` installs cleanly (3
 
 ## Tests
 
-`pytest` (28 tests): recall against a hand-made fixture with known answers, deterministic slicing, dataset hash refusal, every setting present in the report, refusal text for each mismatched setting, claim files without settings rejected, judge parsing.
+`pytest` (32 tests): recall against a hand-made fixture with known answers, deterministic slicing, dataset hash refusal, every setting present in the report, refusal text for each mismatched setting, claim files without settings rejected, judge parsing, vendor-file recount with ERROR and missing rows.

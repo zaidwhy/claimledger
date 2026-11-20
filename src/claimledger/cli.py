@@ -10,6 +10,7 @@ from .compare import ClaimFileError, compare, load_claims
 from .judge import judge_label, ollama_judge
 from .report import render_markdown, write_report
 from .runner import INDEX_TEXTS, AdapterSelfTestFailed, run, selftest
+from .tally import TallyError, load_mem0, render_tally, tally_mem0
 
 DEFAULT_DATA = Path("data") / "longmemeval_s_cleaned.json"
 
@@ -90,3 +91,14 @@ def compare_command(claims, report_path, baseline_paths):
     report = json.loads(report_path.read_text(encoding="utf-8"))
     baselines = [json.loads(p.read_text(encoding="utf-8")) for p in baseline_paths]
     click.echo(compare(claims_doc, report, baselines))
+
+
+@main.command("tally")
+@click.argument("result_file", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+def tally_command(result_file):
+    """Recount a vendor's published per-question result file (mem0 memory-benchmarks format)."""
+    try:
+        result = tally_mem0(load_mem0(result_file))
+    except (TallyError, json.JSONDecodeError) as error:
+        _fail(f"{result_file}: {error}")
+    click.echo(render_tally(result_file, result))

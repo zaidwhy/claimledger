@@ -256,3 +256,46 @@ def test_every_claim_file_loads_and_states_all_comparable_settings():
         doc = load_claims(f)
         assert doc["library"] == f.stem
         assert doc["claims"]
+
+
+# ---- tally: recount a vendor per-question file ----
+
+from claimledger.tally import TallyError, load_mem0, tally_mem0
+
+
+def _mem0_file(tmp_path, rows):
+    path = tmp_path / "vendor.json"
+    path.write_text(json.dumps({"metadata": {"judge_model": "gpt-5"}, "evaluations": rows}), encoding="utf-8")
+    return path
+
+
+def test_tally_counts_pass_and_reports_errors_both_ways(tmp_path):
+    rows = [
+        {"question_type": "temporal", "cutoff_results": {"top_200": {"judgment": "PASS"}}},
+        {"question_type": "temporal", "cutoff_results": {"top_200": {"judgment": "FAIL"}}},
+        {"question_type": "multi", "cutoff_results": {"top_200": {"judgment": "CORRECT"}}},
+        {"question_type": "multi", "cutoff_results": {"top_200": {"judgment": "ERROR"}}},
+    ]
+    cell = tally_mem0(load_mem0(_mem0_file(tmp_path, rows)))["cutoffs"]["top_200"]
+    assert cell["passed"] == 2 and cell["errors"] == 1
+    assert cell["accuracy_errors_as_wrong"] == 0.5
+    assert cell["accuracy_errors_excluded"] == pytest.approx(2 / 3)
+    assert cell["by_group"] == {"multi": {"passed": 1, "n": 2}, "temporal": {"passed": 1, "n": 2}}
+
+
+def test_tally_row_without_verdict_counts_as_not_passed(tmp_path):
+    rows = [
+        {"question_type": "a", "cutoff_results": {"top_50": {"judgment": "PASS"}}},
+        {"question_type": "a", "cutoff_results": {}},
+    ]
+    cell = tally_mem0(load_mem0(_mem0_file(tmp_path, rows)))["cutoffs"]["top_50"]
+    assert cell["missing"] == 1 and cell["accuracy_errors_as_wrong"] == 0.5
+
+
+def test_tally_refuses_non_mem0_file(tmp_path):
+    path = tmp_path / "other.json"
+    path.write_text(json.dumps({"results": []}), encoding="utf-8")
+    with pytest.raises(TallyError, match="evaluations"):
+        load_mem0(path)
+    result = CliRunner().invoke(main, ["tally", str(path)])
+    assert result.exit_code == 2 and "not a mem0 memory-benchmarks result file" in result.output
