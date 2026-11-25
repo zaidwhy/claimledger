@@ -1,5 +1,7 @@
 # claimledger
 
+<img src=".github/hero.webp" alt="A brass kitchen scale on a worn workbench, a stack of index cards in one pan and a grey stone in the other, with a notebook and a pencil beside it." width="100%">
+
 A memory library's README says "96.6% R@5 on LongMemEval". Which questions, which k, which index text, which retrieval path, which judge, and what does plain BM25 score on the same questions? claimledger runs the library on a fixed, seeded slice of LongMemEval and prints what it measured next to what was claimed, with every setting on both sides. When the settings differ, it says which setting differs and states no gap.
 
 It reports numbers and settings. It does not classify a claim as anything.
